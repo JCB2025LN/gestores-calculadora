@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+ <meta charset="UTF-8" />
+ <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self' https://www.google-analytics.com https://formspree.io; font-src 'self'; frame-src 'none'; object-src 'none'; form-action 'self' https://formspree.io;">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <title>Calculadora de Honorarios para Abogados Perú – Gestores Públicos</title>
+ <meta name="description" content="Calcula cuánto cobrar por tus servicios legales en Perú. RPH sin IGV, Factura/Boleta con IGV. Ajustes por complejidad, urgencia y laboriosidad. Herramienta gratuita para abogados y gestores públicos.">
+ <link rel="canonical" href="https://gestores.pe/">
+ <meta name="keywords" content="calculadora honorarios abogados perú, cuánto cobrar como abogado, tarifa por hora abogado perú, recibo por honorarios 4ta categoría, factura honorarios profesionales">
+ <meta name="author" content="Gestores Públicos Perú">
+ <!-- Open Graph -->
+ <meta property="og:type" content="website">
+ <meta property="og:title" content="Calculadora de Honorarios - ABOGADOS PERÚ | Gestores Públicos">
+ <meta property="og:description" content="Fija tus honorarios con criterio tributario. Calcula RPH, Factura o Boleta al instante.">
+ <meta property="og:url" content="https://gestores.pe/">
+ <meta property="og:image" content="https://gestorespublicos.pe/img/og-calculadora.jpg">
+ <meta property="og:locale" content="es_PE">
+ <meta name="twitter:card" content="summary_large_image">
+ <!-- Schema: SoftwareApplication -->
+ <script type="application/ld+json">
+ {
+ "@context":"https://schema.org",
+ "@type":"SoftwareApplication",
+ "name":"Calculadora de Honorarios para Abogados",
+ "applicationCategory":"BusinessApplication",
+ "operatingSystem":"Web",
+ "url":"https://gestores.pe/",
+ "description":"Calcula honorarios profesionales con IGV, RPH o Boleta. Ajusta por complejidad, urgencia y laboriosidad. Gratis para abogados peruanos.",
+ "offers":{"@type":"Offer","price":"0","priceCurrency":"PEN"},
+ "author":{"@type":"Organization","name":"Gestores Públicos Perú","url":"https://gestorespublicos.pe/"}
+ }
+ </script>
+ <!-- FAQ Schema -->
+ <script type="application/ld+json">
+ {
+ "@context":"https://schema.org",
+ "@type":"FAQPage",
+ "mainEntity":[
+   {"@type":"Question","name":"¿El Recibo por Honorarios (RPH) lleva IGV?","acceptedAnswer":{"@type":"Answer","text":"No. El RPH de 4ta categoría no está gravado con IGV en Perú."}},
+   {"@type":"Question","name":"¿Factura o Boleta incluyen IGV?","acceptedAnswer":{"@type":"Answer","text":"Sí. En Boleta el total ya incluye IGV; en Factura se muestra como línea separada."}},
+   {"@type":"Question","name":"¿Cómo funcionan los factores de ajuste?","acceptedAnswer":{"@type":"Answer","text":"Suman un porcentaje configurable (baja/normal/alta) por complejidad técnica, urgencia y laboriosidad operativa."}}
+ ]
+ }
+ </script>
+ <style>
+ :root {
+ --primary-color: #0a2b4c; --secondary-color: #d4af37; --background-color: #f4f7f9;
+ --widget-bg-color: #ffffff; --text-color: #333333; --border-color: #e0e0e0;
+ --success-color: #28a745; --danger-color: #dc3545; --edit-color: #007bff;
+ }
+ * { box-sizing: border-box; }
+ body { font-family: "Segoe UI", system-ui, -apple-system, sans-serif; background: var(--background-color); color: var(--text-color); margin: 0; padding: 20px; }
+ .main-container { max-width: 1200px; margin: auto; background: var(--widget-bg-color); padding: 24px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+ header { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
+ header img { width: 44px; height: 44px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color); }
+ header .brand { font-size: 14px; color: #667; }
+ h1 { color: var(--primary-color); margin: 2px 0 6px; }
+ .calculator-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-top: 16px; }
+ @media (max-width: 768px) { .calculator-layout { grid-template-columns: 1fr; } }
+ .input-group { margin-bottom: 12px; }
+ .input-group label { display: inline-flex; align-items: center; font-weight: 600; margin-bottom: 6px; gap: 6px; }
+ .hint { display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; font-size:11px; color:#fff; background:#9aa3b2; border-radius:50%; cursor:help; }
+ .input-group input, .input-group select, .input-group textarea { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background:#fff; }
+ .input-group input[aria-invalid="true"], .input-group select[aria-invalid="true"] { border-color: var(--danger-color); background:#fff7f7; }
+ .error { color: var(--danger-color); font-size: 12px; margin-top: 4px; display:none; }
+ .results-panel { background-color: #f9fafb; padding: 18px; border-radius: 10px; border: 1px solid var(--border-color); position: sticky; top: 12px; align-self: start; }
+ .results-panel h3 { margin-top: 0; color: var(--primary-color); }
+ .result-line { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #eee; font-size: 14px; }
+ .result-line span:first-child { font-weight: 600; }
+ .total-line { font-size: 1.35em; font-weight: 800; color: var(--success-color); margin-top: 10px; }
+ details { margin: 8px 0 4px; }
+ .settings-toggle { cursor: pointer; color: var(--primary-color); font-weight: bold; }
+ .settings-panel { background-color: #fdfdfd; border: 1px dashed var(--border-color); padding: 16px; margin-top: 8px; border-radius: 8px; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+ .btn { display: block; width: 100%; padding: 14px; font-size: 1.05em; font-weight: 700; color: white; border: none; border-radius: 8px; cursor: pointer; margin-top: 16px; }
+ .btn-save { background-color: var(--secondary-color); }
+ .btn-update { background-color: var(--edit-color); }
+ .btn-print { background:#6c757d; }
+ .btn-whatsapp { background:#25D366; display:flex; align-items:center; justify-content:center; gap:8px; }
+ .btn:disabled { opacity:.5; cursor:not-allowed; }
+ #history-table { width: 100%; margin-top: 18px; border-collapse: collapse; }
+ #history-table th, #history-table td { padding: 10px; border: 1px solid var(--border-color); text-align: left; vertical-align: middle; }
+ #history-table th { background-color: #f2f2f2; }
+ .action-buttons button { padding: 5px 10px; margin-right: 5px; border: none; border-radius: 6px; color: white; cursor: pointer; font-size: 15px; }
+ .btn-edit { background-color: var(--edit-color); }
+ .btn-delete { background-color: var(--danger-color); }
+ .btn-report { background-color: #6c757d; }
+ .modal { display: none; position: fixed; z-index: 1000; inset: 0; overflow: auto; background-color: rgba(0,0,0,0.5); }
+ .modal-content { background-color: #fefefe; margin: 6% auto; padding: 22px; border: 1px solid #888; width: 86%; max-width: 760px; border-radius: 10px; }
+ .close-button { color: #777; float: right; font-size: 26px; font-weight: bold; cursor: pointer; }
+ .inline { display:flex; gap:10px; align-items:center; }
+ .muted { color:#667; font-size:12px; }
+ .modal-actions { display:flex; gap:10px; margin-top:12px; }
+ .lead-cta { display:none; background:#0a2b4c; color:white; text-align:center; padding:20px; border-radius:10px; margin-top:20px; }
+ .lead-cta a { color:#d4af37; font-weight:700; }
+ .floating-whatsapp { position:fixed; bottom:24px; right:24px; background:#25D366; color:white; width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.25); z-index:999; cursor:pointer; text-decoration:none; font-size:28px; transition:transform .2s; }
+ .floating-whatsapp:hover { transform:scale(1.1); }
+ @media print { .modal, .main-container details, #history-section, .btn, header, .floating-whatsapp { display:none !important; } .printable { display:block !important; } }
+ </style>
+ <!-- Google Analytics 4 - CAMBIAR G-MEASUREMENT_ID -->
+ <script async src="https://www.googletagmanager.com/gtag/js?id=G-MEASUREMENT_ID"></script>
+ <script>
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+ gtag('config', 'G-MEASUREMENT_ID');
+ </script>
+ <meta http-equiv="X-Content-Type-Options" content="nosniff">
+</head>
+<body>
+
+ <!-- WhatsApp flotante -->
+ <a class="floating-whatsapp" href="https://wa.me/51986185255?text=Quiero%20una%20asesor%C3%ADa%20personalizada%20sobre%20honorarios" target="_blank" rel="noopener" title="Contáctanos por WhatsApp">💬</a>
+
+ <!-- HERO -->
+ <section style="max-width:1100px;margin:0 auto 18px;padding:18px 16px;text-align:center;">
+ <h1 style="margin:0 0 6px;">Calcula cuánto cobrar por tus servicios legales</h1>
+ <p style="margin:0 0 12px;font-size:1.1em;">RPH, Factura o Boleta · IGV automático · Ajustes por complejidad, urgencia y laboriosidad · <strong>100% gratuito</strong></p>
+ <a href="#calculator" style="display:inline-block;padding:10px 16px;border-radius:8px;background:#0a2b4c;color:#fff;font-weight:700;text-decoration:none;">Empezar a calcular</a>
+ </section>
+
+ <div class="main-container" id="calculator">
+ <header>
+ <img alt="Gestores Públicos Perú" src="https://scontent.flim20-1.fna.fbcdn.net/v/t39.30808-6/406836396_704560075140112_1378587329966263231_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHAAG3G8pS4rsDgOLNen202RwF65qIMZ-dHAXrmogxn547LslSl0a4R2JFHKDU9QE3ukdwQ95OV_AmVOhFF-6D6&_nc_ohc=vJCkvQ-t0skQ7kNvwF6aeJV&_nc_oc=AdnTM4VHuPqaPt6e2_IYATkvNEhs9LalAAkrpC5SNvdVpd1MFbhZxItqUwzXq8IOM88&_nc_zt=23&_nc_ht=scontent.flim20-1.fna&_nc_gid=zEflvjOEz6bzU8aP38BPLw&oh=00_AfV105y3GuouvW5FjrwL0bVw5F_kvLcbsG6SuF2FnBaj-Q&oe=68A7D654" />
+ <div>
+ <div class="brand">GESTORES PÚBLICOS PERÚ</div>
+ <h1>Calculadora de Honorarios</h1>
+ </div>
+ </header>
+
+ <details>
+ <summary class="settings-toggle">⚙️ Ajustes de cálculo y moneda</summary>
+ <div class="settings-panel" id="settings-panel">
+ <div class="input-group">
+ <label>Moneda <span class="hint" title="Moneda de presentación de los montos.">ⓘ</span></label>
+ <select id="setting-currency">
+ <option value="S/">S/ (PEN)</option>
+ <option value="$">$ (USD)</option>
+ <option value="€">€ (EUR)</option>
+ </select>
+ </div>
+ <div class="input-group">
+ <label>Monto/Hora <span class="hint" title="Tarifa base por hora. Se usa si dejas vacío el campo del formulario.">ⓘ</span></label>
+ <input type="number" id="setting-rate" step="0.01" placeholder="Ej. 50" />
+ </div>
+ <div class="input-group">
+ <label>Factor – Baja <span class="hint" title="% adicional si el factor es BAJO (default 0%).">ⓘ</span></label>
+ <input type="number" id="setting-low" step="1" placeholder="0" />
+ </div>
+ <div class="input-group">
+ <label>Factor – Normal <span class="hint" title="% adicional si el factor es NORMAL (default 10%).">ⓘ</span></label>
+ <input type="number" id="setting-normal" step="1" placeholder="10" />
+ </div>
+ <div class="input-group">
+ <label>Factor – Alta <span class="hint" title="% adicional si el factor es ALTO (default 20%).">ⓘ</span></label>
+ <input type="number" id="setting-high" step="1" placeholder="20" />
+ </div>
+ <div class="input-group">
+ <label>Régimen / Comprobante <span class="hint" title="RPH (4ta), Factura o Boleta (3ra).">ⓘ</span></label>
+ <select id="setting-regimen">
+ <option value="rh">Recibo por Honorarios (4ta)</option>
+ <option value="factura">Factura (3ra)</option>
+ <option value="boleta">Boleta de Venta (3ra)</option>
+ </select>
+ </div>
+ <div id="block-rh" class="input-group">
+ <div class="muted">RPH: sin IGV. La retención 8% no altera el precio al cliente.</div>
+ </div>
+ <div id="block-factura" class="input-group" style="display:none;">
+ <label class="inline">
+ <input type="checkbox" id="setting-igv-enable" checked /> Aplicar IGV 18%
+ <span class="hint" title="IGV aplica con FACTURA. En BOLETA el total incluye IGV.">ⓘ</span>
+ </label>
+ <div class="inline">
+ <input type="number" id="setting-igv" step="0.01" placeholder="18" style="max-width:110px;" />
+ <span class="muted">%</span>
+ <span class="muted">(Boleta: IGV incluido)</span>
+ </div>
+ </div>
+ </div>
+ </details>
+
+ <div class="calculator-layout">
+ <div class="inputs-panel">
+ <h2 id="form-title">Nuevo presupuesto</h2>
+ <input type="hidden" id="editing-row-id" />
+
+ <div class="input-group">
+ <label for="client">Nombre del Cliente</label>
+ <input type="text" id="client" placeholder="Ej: Empresa X" />
+ <div id="err-client" class="error"></div>
+ </div>
+
+ <div class="input-group">
+ <label for="materia">Materia</label>
+ <select id="materia">
+ <option value="Civil">Civil</option>
+ <option value="Penal">Penal</option>
+ <option value="Administrativo">Administrativo</option>
+ <option value="Laboral">Laboral</option>
+ <option value="Contencioso Administrativo">Contencioso Administrativo</option>
+ <option value="Constitucional">Constitucional</option>
+ <option value="Tributario">Tributario</option>
+ <option value="other">Otro…</option>
+ </select>
+ </div>
+ <div class="input-group" id="other-materia-group" style="display:none;">
+ <label for="other-materia">Especificar Materia</label>
+ <input type="text" id="other-materia" placeholder="Describe la materia" />
+ <div id="err-other-materia" class="error"></div>
+ </div>
+
+ <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+ <div class="input-group"><label for="hours">Total Horas Estimadas</label><input type="number" id="hours" step="0.1" placeholder="Ej. 10" /><div id="err-hours" class="error"></div></div>
+ <div class="input-group"><label for="rate">Monto por Hora</label><input type="number" id="rate" step="0.01" placeholder="Usa tarifa de Ajustes si vacío" /><div id="err-rate" class="error"></div></div>
+ </div>
+
+ <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+ <div class="input-group"><label for="complexity">Complejidad <span class="hint" title="Dificultad técnica-jurídica del asunto.">ⓘ</span></label><select id="complexity"><option value="low">Baja</option><option value="normal" selected>Normal</option><option value="high">Alta</option></select></div>
+ <div class="input-group"><label for="urgency">Urgencia <span class="hint" title="Tiempo de respuesta requerido.">ⓘ</span></label><select id="urgency"><option value="low">Baja</option><option value="normal" selected>Normal</option><option value="high">Alta</option></select></div>
+ <div class="input-group"><label for="labor">Laboriosidad <span class="hint" title="Carga operativa: reuniones, escritos, audiencias.">ⓘ</span></label><select id="labor"><option value="low">Baja</option><option value="normal" selected>Normal</option><option value="high">Alta</option></select></div>
+ </div>
+
+ <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+ <div class="input-group"><label for="discount">Descuento (%)</label><input type="number" id="discount" step="0.01" placeholder="0" /><div id="err-discount" class="error"></div></div>
+ <div class="input-group"><label for="expenses">Gastos Suplidos</label><input type="number" id="expenses" step="0.01" placeholder="0" /><div id="err-expenses" class="error"></div></div>
+ </div>
+ <div class="input-group"><label for="notes">Observaciones</label><textarea id="notes" rows="3" placeholder="Notas internas u observaciones para el reporte"></textarea></div>
+ </div>
+
+ <div class="results-panel">
+ <h3>Resumen del Cálculo</h3>
+ <div id="results-summary">
+ <div class="result-line"><span>Comprobante</span><span id="res-regimen"></span></div>
+ <div class="result-line"><span>Costo Base</span><span id="res-base-cost"></span></div>
+ <div class="result-line"><span>Ajuste Factores</span><span id="res-factor-adj"></span></div>
+ <div class="result-line"><span>Subtotal Honorarios</span><span id="res-subtotal"></span></div>
+ <div class="result-line"><span>Descuento</span><span id="res-discount"></span></div>
+ <div class="result-line" id="line-igv" style="display:none;"><span>IGV</span><span id="res-igv"></span></div>
+ <div class="result-line" id="line-receipt"><span>Importe del Comprobante</span><span id="res-receipt"></span></div>
+ <div class="result-line"><span>Total Honorarios</span><span id="res-total-honorarios"></span></div>
+ <div class="result-line"><span>+ Gastos Suplidos</span><span id="res-expenses"></span></div>
+ <div class="result-line total-line"><span>TOTAL A COBRAR</span><span id="res-total"></span></div>
+ </div>
+ <div id="button-wrapper" class="inline" style="gap:10px; flex-wrap:wrap;">
+ <button id="save-btn" class="btn btn-save" disabled>Guardar Presupuesto</button>
+ <button id="print-last-btn" class="btn btn-print" disabled>Imprimir último reporte</button>
+ </div>
+ <!-- CTA post-cálculo -->
+ <div id="lead-cta-after-calc" class="lead-cta">
+ <p style="font-size:1.1em;margin-bottom:8px;">📋 ¿Quieres recibir este presupuesto en PDF?</p>
+ <form id="lead-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:12px 0;">
+ <input type="email" name="email" placeholder="tu@correo.com" required style="padding:10px 14px;border-radius:6px;border:none;flex:1;min-width:200px;font-size:15px;" />
+ <input type="hidden" name="_subject" value="Nuevo lead - Calculadora Honorarios" />
+ <input type="hidden" name="presupuesto" id="lead-prest-data" value="" />
+ <button type="submit" style="padding:10px 20px;border-radius:6px;border:none;background:#d4af37;color:#0a2b4c;font-weight:700;cursor:pointer;font-size:15px;">📥 Enviar PDF</button>
+ </form>
+ <p style="font-size:0.85em;opacity:0.8;">Recibirás un PDF con tu presupuesto. Sin spam, sin compromiso.</p>
+ <hr style="border-color:rgba(255,255,255,0.2);margin:12px 0;">
+ <p style="font-size:1em;">¿Necesitas ayuda para fijar tus honorarios?</p>
+ <a href="https://wa.me/51986185255?text=Quiero%20una%20asesor%C3%ADa%20sobre%20honorarios%20profesionales" target="_blank" rel="noopener" style="display:inline-block;background:#25D366;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:700;margin-top:4px;">💬 Cotiza con nosotros</a>
+ </div>
+ </div>
+ </div>
+
+ <!-- Historial -->
+ <div id="history-section" style="margin-top: 28px;">
+ <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+ <h2>Historial de presupuestos</h2>
+ <button id="clear-data-btn" class="btn" style="width:auto;padding:8px 16px;background:#dc3545;">Limpiar datos guardados</button>
+ </div>
+ <table id="history-table">
+ <thead><tr><th>Cliente</th><th>Materia</th><th>Horas</th><th>Total a Cobrar</th><th>Acciones</th></tr></thead>
+ <tbody></tbody>
+ </table>
+ </div>
+ </div>
+
+ <!-- Modal reporte -->
+ <div id="report-modal" class="modal">
+ <div class="modal-content">
+ <span id="close-modal-btn" class="close-button">&times;</span>
+ <h2>Reporte de presupuesto</h2>
+ <pre id="report-content" class="printable" style="white-space: pre-wrap; background-color: #f4f4f4; padding: 14px; border: 1px solid #ddd; border-radius:8px;"></pre>
+ <div class="modal-actions">
+ <button id="btn-print" class="btn btn-print" style="width:auto;">🖨️ Imprimir / PDF</button>
+ <button id="btn-wa-report" class="btn btn-whatsapp" style="width:auto;">💬 Enviar por WhatsApp</button>
+ <button id="btn-close" class="btn btn-update" style="width:auto;">Cerrar</button>
+ </div>
+ </div>
+ </div>
+
+ <!-- FAQs -->
+ <section style="max-width:1100px;margin:24px auto;padding:0 16px;">
+ <h2>Preguntas frecuentes sobre honorarios profesionales</h2>
+ <details><summary>¿El Recibo por Honorarios (RPH) lleva IGV?</summary><p>No. El RPH de 4ta categoría no está gravado con IGV en Perú. La retención del 8% es un tema del contribuyente, no altera el precio al cliente.</p></details>
+ <details><summary>¿Factura o Boleta incluyen IGV?</summary><p>Sí. En Boleta de Venta el total mostrado ya incluye IGV. En Factura se muestra como línea separada para que el cliente pueda deducir crédito fiscal.</p></details>
+ <details><summary>¿Cómo funcionan los factores de ajuste?</summary><p>Cada factor (complejidad, urgencia, laboriosidad) suma un porcentaje configurable sobre el costo base. Puedes personalizar los porcentajes en Ajustes.</p></details>
+ <details><summary>¿Qué diferencia hay entre costo base y subtotal?</summary><p>El costo base son las horas estimadas × tarifa/hora. Al sumar los factores de ajuste se obtiene el subtotal de honorarios.</p></details>
+ <details><summary>¿El historial de presupuestos se guarda en el navegador?</summary><p>Sí, se almacena localmente en tu navegador. No compartas el enlace si tienes datos sensibles guardados.</p></details>
+ </section>
+
+ <footer style="max-width:1100px;margin:24px auto;text-align:center;padding:16px;color:#667;font-size:13px;">
+ <p><strong>Gestores Públicos Perú</strong> — Asesoría legal para servidores públicos y abogados independientes</p>
+ <p><a href="https://gestorespublicos.pe/" style="color:#0a2b4c;">Web principal</a> · <a href="https://wa.me/51986185255" style="color:#0a2b4c;">WhatsApp</a></p>
+ </footer>
+
+ <script>
+ document.addEventListener('DOMContentLoaded', () => {
+ const $ = (id) => document.getElementById(id);
+ const allInputs = document.querySelectorAll('.main-container input, .main-container select, .main-container textarea');
+ const formTitle = $('form-title');
+ const editingRowIdInput = $('editing-row-id');
+ const historyTableBody = document.querySelector('#history-table tbody');
+ const materiaSelect = $('materia');
+ const otherMateriaGroup = $('other-materia-group');
+ const reportModal = $('report-modal');
+ const reportContent = $('report-content');
+ const closeModalBtn = $('close-modal-btn');
+ const btnPrintModal = $('btn-print');
+ const btnCloseModal = $('btn-close');
+ const btnWaReport = $('btn-wa-report');
+
+ const STORAGE = {
+   budgets: 'hon_budgets_v18',
+   settings: 'hon_settings_v18',
+   lastReport: 'hon_last_report_v18'
+ };
+
+ let budgets = [];
+ let nextId = 1;
+
+ function gaEvent(name, params) {
+   try { if (typeof gtag === 'function') gtag('event', name, params || {}); } catch(e) {}
+ }
+
+ const CLEAR_KEYS = [
+   'hon_budgets_v18','hon_settings_v18','hon_last_report_v18',
+   'hon_budgets_v17','hon_settings_v17','hon_last_report_v17',
+   'hon_budgets_v16','hon_settings_v16','hon_last_report_v16',
+   'hon_budgets_v15','hon_settings_v15','hon_last_report_v15',
+   'hon_budgets','hon_settings','hon_last_report'
+ ];
+ const clearAllData = (silent) => {
+   try { CLEAR_KEYS.forEach(k => localStorage.removeItem(k)); } catch(e) {}
+   budgets = [];
+   renderHistory();
+   resetForm();
+   if (!silent) alert('Listo: datos locales eliminados.');
+ };
+
+ const formatCurrency = (value, currency) => {
+   currency = currency || 'S/';
+   const n = isFinite(value) ? value : 0;
+   try {
+     return currency + ' ' + new Intl.NumberFormat('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
+   } catch(e) {
+     return currency + ' ' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+   }
+ };
+
+ const parseNumber = (el) => {
+   const v = parseFloat(el.value);
+   return isNaN(v) ? 0 : v;
+ };
+
+ const readPctOrFallback = (elId, fallbackPct) => {
+   const raw = $(elId).value;
+   if (raw === '' || raw === null) return fallbackPct / 100;
+   const n = parseFloat(raw);
+   return isNaN(n) ? (fallbackPct / 100) : (n / 100);
+ };
+
+ const getFactorValue = (level) => {
+   const low = readPctOrFallback('setting-low', 0);
+   const normal = readPctOrFallback('setting-normal', 10);
+   const high = readPctOrFallback('setting-high', 20);
+   return { low: low, normal: normal, high: high }[level] || 0;
+ };
+
+ const syncRegimenBlocks = () => {
+   const regimen = $('setting-regimen').value;
+   const labels = { rh: 'Recibo por Honorarios (4ta)', factura: 'Factura (3ra)', boleta: 'Boleta de Venta (3ra)' };
+   if ($('res-regimen')) $('res-regimen').textContent = labels[regimen] || regimen;
+   if (regimen === 'rh') {
+     $('block-rh').style.display = '';
+     $('block-factura').style.display = 'none';
+   } else {
+     $('block-rh').style.display = 'none';
+     $('block-factura').style.display = '';
+   }
+ };
+
+ const validate = () => {
+   const errors = {};
+   const setErr = (id, cond, msg) => {
+     const field = $(id);
+     const errEl = $('err-' + id);
+     const hasErr = Boolean(cond);
+     if (field) field.setAttribute('aria-invalid', hasErr ? 'true' : 'false');
+     if (errEl) { errEl.style.display = hasErr ? 'block' : 'none'; errEl.textContent = hasErr ? msg : ''; }
+     if (hasErr) errors[id] = msg; else delete errors[id];
+   };
+   setErr('hours', !(parseFloat($('hours').value) > 0), 'Ingresa horas (> 0).');
+   const rateVal = parseFloat($('rate').value);
+   const settingRateVal = parseFloat($('setting-rate').value);
+   setErr('rate', isNaN(rateVal) && isNaN(settingRateVal), 'Define tarifa aquí o en Ajustes.');
+   setErr('discount', !($('discount').value === '' || (parseFloat($('discount').value) >= 0 && parseFloat($('discount').value) <= 100)), 'Descuento entre 0 y 100.');
+   setErr('expenses', !($('expenses').value === '' || parseFloat($('expenses').value) >= 0), 'Gastos no puede ser negativo.');
+   setErr('client', $('client').value.trim().length === 0, 'Ingresa un nombre de cliente.');
+   if (materiaSelect.value === 'other') setErr('other-materia', $('other-materia').value.trim().length === 0, 'Describe la materia.');
+   const valid = Object.keys(errors).length === 0;
+   const saveBtn = $('save-btn');
+   if (saveBtn) saveBtn.disabled = !valid;
+   return valid;
+ };
+
+ const calculate = () => {
+   const currency = $('setting-currency').value || 'S/';
+   const hours = parseNumber($('hours'));
+   let rate = parseNumber($('rate'));
+   if (!rate) rate = parseNumber($('setting-rate'));
+   const discountPerc = parseNumber($('discount')) / 100;
+   const expenses = parseNumber($('expenses'));
+   const totalFactor = getFactorValue($('complexity').value) + getFactorValue($('urgency').value) + getFactorValue($('labor').value);
+   const baseCost = hours * rate;
+   const factorAdj = baseCost * totalFactor;
+   const subtotal = baseCost + factorAdj;
+   const discountAmount = subtotal * discountPerc;
+   const regimen = $('setting-regimen').value;
+   let igvAmount = 0;
+   if (regimen !== 'rh' && $('setting-igv-enable').checked) {
+     const igvP = (parseFloat($('setting-igv').value) || 18) / 100;
+     igvAmount = subtotal * igvP;
+   }
+   const receiptAmount = subtotal - discountAmount + igvAmount;
+   const totalHonorarios = receiptAmount;
+   const total = totalHonorarios + expenses;
+   $('res-base-cost').textContent = formatCurrency(baseCost, currency);
+   $('res-factor-adj').textContent = '+ ' + formatCurrency(factorAdj, currency);
+   $('res-subtotal').textContent = formatCurrency(subtotal, currency);
+   $('res-discount').textContent = '- ' + formatCurrency(discountAmount, currency);
+   $('res-igv').textContent = '+ ' + formatCurrency(igvAmount, currency);
+   $('res-receipt').textContent = formatCurrency(receiptAmount, currency);
+   $('res-total-honorarios').textContent = formatCurrency(totalHonorarios, currency);
+   $('res-expenses').textContent = '+ ' + formatCurrency(expenses, currency);
+   $('res-total').textContent = formatCurrency(total, currency);
+   $('line-igv').style.display = (regimen === 'factura' && $('setting-igv-enable').checked) ? '' : 'none';
+   // Guardar datos para el lead form
+   window._lastCalculation = {
+     currency, hours, rate, discountPerc, expenses, totalFactor,
+     baseCost, factorAdj, subtotal, discountAmount, regimen, igvAmount,
+     receiptAmount, totalHonorarios, total, client: $('client').value,
+     materia: materiaSelect.value === 'other' ? $('other-materia').value : materiaSelect.value
+   };
+   // Mostrar CTA post-calculo
+   const leadCta = $('lead-cta-after-calc');
+   if (leadCta && hours > 0) {
+     leadCta.style.display = 'block';
+   }
+   validate();
+ };
+
+ const renderHistory = () => {
+   const currency = $('setting-currency').value || 'S/';
+   historyTableBody.innerHTML = '';
+   budgets.forEach(budget => {
+     const row = historyTableBody.insertRow();
+     row.dataset.id = budget.id;
+     const materiaText = budget.materia === 'other' ? budget.otherMateria : budget.materia;
+     row.innerHTML = `
+       <td>${escHtml(budget.client || '')}</td>
+       <td>${escHtml(materiaText || '')}</td>
+       <td>${budget.hours || 0}</td>
+       <td>${formatCurrency(budget.total || 0, currency)}</td>
+       <td class="action-buttons">
+         <button class="btn-report" data-action="report" title="Ver reporte">📄</button>
+         <button class="btn-edit" data-action="edit" title="Editar">✏️</button>
+         <button class="btn-delete" data-action="delete" title="Eliminar">🗑️</button>
+       </td>`;
+   });
+   if ($('print-last-btn')) $('print-last-btn').disabled = budgets.length === 0;
+ };
+
+ function escHtml(text) {
+   const d = document.createElement('div');
+   d.textContent = text;
+   return d.innerHTML;
+ }
+
+ const getFormData = () => {
+   const materiaValue = materiaSelect.value;
+   const currency = $('setting-currency').value || 'S/';
+   return {
+     client: $('client').value.trim(),
+     materia: materiaValue,
+     otherMateria: materiaValue === 'other' ? $('other-materia').value.trim() : '',
+     hours: $('hours').value,
+     rate: $('rate').value || $('setting-rate').value,
+     complexity: $('complexity').value,
+     urgency: $('urgency').value,
+     labor: $('labor').value,
+     discount: $('discount').value,
+     expenses: $('expenses').value,
+     notes: $('notes').value,
+     currency: currency,
+     regimen: $('setting-regimen').value,
+     total: parseFloat(($('res-total').textContent || '').replace(/[^0-9.\-]+/g, '')) || 0
+   };
+ };
+
+ const setFormData = (data) => {
+   $('client').value = data.client || '';
+   materiaSelect.value = data.materia || 'Civil';
+   if (data.materia === 'other') { otherMateriaGroup.style.display = 'block'; $('other-materia').value = data.otherMateria || ''; } else { otherMateriaGroup.style.display = 'none'; }
+   $('hours').value = data.hours || '';
+   $('rate').value = data.rate || '';
+   $('complexity').value = data.complexity || 'normal';
+   $('urgency').value = data.urgency || 'normal';
+   $('labor').value = data.labor || 'normal';
+   $('discount').value = data.discount || '';
+   $('expenses').value = data.expenses || '';
+   $('notes').value = data.notes || '';
+   $('setting-currency').value = data.currency || 'S/';
+   $('setting-regimen').value = data.regimen || 'rh';
+   syncRegimenBlocks();
+ };
+
+ const resetForm = () => {
+   $('client').value = '';
+   materiaSelect.value = 'Civil';
+   otherMateriaGroup.style.display = 'none';
+   $('other-materia').value = '';
+   $('hours').value = '';
+   $('rate').value = '';
+   $('complexity').value = 'normal';
+   $('urgency').value = 'normal';
+   $('labor').value = 'normal';
+   $('discount').value = '';
+   $('expenses').value = '';
+   $('notes').value = '';
+   editingRowIdInput.value = '';
+   formTitle.textContent = 'Nuevo presupuesto';
+   const saveBtn = $('save-btn');
+   if (saveBtn) saveBtn.textContent = 'Guardar Presupuesto';
+   calculate();
+ };
+
+ const saveBudgets = () => { try { localStorage.setItem(STORAGE.budgets, JSON.stringify(budgets)); } catch(e) {} };
+ const saveSettings = () => {
+   const s = {
+     currency: $('setting-currency').value,
+     rate: $('setting-rate').value,
+     low: $('setting-low').value,
+     normal: $('setting-normal').value,
+     high: $('setting-high').value,
+     regimen: $('setting-regimen').value,
+     igv_enable: $('setting-igv-enable').checked,
+     igv: $('setting-igv').value
+   };
+   try { localStorage.setItem(STORAGE.settings, JSON.stringify(s)); } catch(e) {}
+ };
+
+ const loadSettings = () => {
+   try {
+     const raw = localStorage.getItem(STORAGE.settings);
+     if (!raw) return;
+     const s = JSON.parse(raw);
+     if (s.currency) $('setting-currency').value = s.currency;
+     if (s.rate !== undefined) $('setting-rate').value = s.rate;
+     if (s.low !== undefined) $('setting-low').value = s.low;
+     if (s.normal !== undefined) $('setting-normal').value = s.normal;
+     if (s.high !== undefined) $('setting-high').value = s.high;
+     if (s.regimen) $('setting-regimen').value = s.regimen;
+     if (s.igv_enable !== undefined) $('setting-igv-enable').checked = s.igv_enable;
+     if (s.igv !== undefined) $('setting-igv').value = s.igv;
+     syncRegimenBlocks();
+   } catch(e) {}
+ };
+
+ const loadBudgets = () => {
+   try {
+     const raw = localStorage.getItem(STORAGE.budgets);
+     if (!raw) return;
+     budgets = JSON.parse(raw) || [];
+     nextId = budgets.length ? Math.max.apply(null, budgets.map(function(b) { return b.id || 0; })) + 1 : 1;
+     renderHistory();
+   } catch(e) { budgets = []; }
+ };
+
+ const saveOrUpdate = () => {
+   if (!validate()) return;
+   const editingId = parseInt(editingRowIdInput.value);
+   const data = getFormData();
+   if (editingId) {
+     var i = budgets.findIndex(function(b) { return b.id === editingId; });
+     if (i > -1) budgets[i] = Object.assign({}, data, { id: editingId });
+   } else {
+     data.id = nextId++;
+     budgets.push(data);
+   }
+   saveBudgets();
+   renderHistory();
+   resetForm();
+   gaEvent('budget_saved', { type: editingId ? 'update' : 'new' });
+ };
+
+ const openReport = (text) => {
+   reportContent.textContent = text;
+   try { localStorage.setItem(STORAGE.lastReport, text); } catch(e) {}
+   if ($('print-last-btn')) $('print-last-btn').disabled = false;
+   reportModal.style.display = 'block';
+ };
+
+ const handleHistoryClick = (e) => {
+   const button = e.target.closest('button');
+   if (!button) return;
+   const action = button.dataset.action;
+   const row = button.closest('tr');
+   if (!row) return;
+   const id = parseInt(row.dataset.id);
+   if (action === 'edit') {
+     const budget = budgets.find(function(b) { return b.id === id; });
+     if (budget) {
+       setFormData(budget);
+       editingRowIdInput.value = id;
+       formTitle.textContent = 'Editando presupuesto';
+       var saveBtn = $('save-btn');
+       if (saveBtn) saveBtn.textContent = 'Actualizar Presupuesto';
+       calculate();
+       window.scrollTo({ top: 0, behavior: 'smooth' });
+     }
+   } else if (action === 'delete') {
+     if (confirm('¿Eliminar este presupuesto? Esta accion no se puede deshacer.')) {
+       budgets = budgets.filter(function(b) { return b.id !== id; });
+       saveBudgets();
+       renderHistory();
+     }
+   } else if (action === 'report') {
+     var b = budgets.find(function(x) { return x.id === id; });
+     if (b) {
+       var curr = b.currency || 'S/';
+       var materiaText = b.materia === 'other' ? b.otherMateria : b.materia;
+       var baseCost = parseFloat(b.hours || 0) * parseFloat(b.rate || 0);
+       var factorSum = getFactorValue(b.complexity) + getFactorValue(b.urgency) + getFactorValue(b.labor);
+       var factorAdj = baseCost * factorSum;
+       var subtotal = baseCost + factorAdj;
+       var igvAmount = 0;
+       if (b.regimen !== 'rh') {
+         var igvPerc = (parseFloat($('setting-igv').value) || 18) / 100;
+         if ($('setting-igv-enable').checked) igvAmount = subtotal * igvPerc;
+       }
+       var discountAmount = subtotal * (parseFloat(b.discount || 0) / 100);
+       var receiptAmount = subtotal - discountAmount + igvAmount;
+       var totalHonorarios = receiptAmount;
+       var total = totalHonorarios + parseFloat(b.expenses || 0);
+       var report = [
+         'REPORTE DE PRESUPUESTO DE HONORARIOS',
+         '--------------------------------------',
+         'Cliente: ' + b.client,
+         'Materia: ' + materiaText,
+         'Regimen/Comprobante: ' + (b.regimen === 'rh' ? 'Recibo por Honorarios (4ta)' : (b.regimen === 'factura' ? 'Factura (3ra)' : 'Boleta de Venta (3ra)')),
+         'Fecha: ' + new Date().toLocaleDateString('es-ES'),
+         '',
+         'CALCULO DE HONORARIOS:',
+         '- Horas Estimadas: ' + (b.hours || 0) + ' hrs',
+         '- Tarifa por Hora: ' + formatCurrency(parseFloat(b.rate || 0), curr),
+         '- Costo Base: ' + formatCurrency(baseCost, curr),
+         '',
+         'AJUSTES POR FACTORES:',
+         '- Complejidad: ' + b.complexity,
+         '- Urgencia: ' + b.urgency,
+         '- Laboriosidad: ' + b.labor,
+         '- Ajuste Total: + ' + formatCurrency(factorAdj, curr),
+         '',
+         'DESGLOSE FINANCIERO:',
+         '- Subtotal Honorarios: ' + formatCurrency(subtotal, curr),
+         '- Descuento: - ' + formatCurrency(discountAmount, curr),
+         (b.regimen === 'factura' ? '+ IGV: + ' + formatCurrency(igvAmount, curr) : ''),
+         '- Importe Comprobante: ' + formatCurrency(receiptAmount, curr) + (b.regimen === 'boleta' ? ' (incluye IGV)' : ''),
+         '--------------------------------------',
+         'TOTAL HONORARIOS: ' + formatCurrency(totalHonorarios, curr) + (b.regimen === 'boleta' ? ' (incluye IGV)' : ''),
+         '',
+         'GASTOS SUPLIDOS:',
+         '- Otros Gastos: + ' + formatCurrency(parseFloat(b.expenses || 0), curr),
+         '--------------------------------------',
+         'TOTAL A COBRAR: ' + formatCurrency(total, curr),
+         '',
+         'OBSERVACIONES:',
+         b.notes || 'Sin observaciones.'
+       ].filter(function(l) { return l !== undefined; }).join('\n');
+       openReport(report);
+     }
+   }
+ };
+
+ // Imprimir
+ btnPrintModal.addEventListener('click', function() {
+   gaEvent('report_printed');
+   var text = reportContent.textContent || '';
+   var w = window.open('', '_blank');
+   if (!w) return;
+   w.document.write('<pre style="white-space:pre-wrap;font:14px system-ui;margin:20px;">' + text.replace(/</g,'&lt;') + '</pre>');
+   w.document.close();
+   w.focus();
+   w.print();
+ });
+ btnCloseModal.addEventListener('click', function() { reportModal.style.display = 'none'; });
+ closeModalBtn.addEventListener('click', function() { reportModal.style.display = 'none'; });
+ window.addEventListener('click', function(e) { if (e.target == reportModal) reportModal.style.display = 'none'; });
+ 
+ // Enviar por WhatsApp
+ if (btnWaReport) {
+   btnWaReport.addEventListener('click', function() {
+     var text = reportContent.textContent || '';
+     var waUrl = 'https://wa.me/51986185255?text=' + encodeURIComponent(text.substring(0, 1500));
+     window.open(waUrl, '_blank');
+     gaEvent('report_whatsapp');
+   });
+ }
+
+ // Print last report button
+ var printLastBtn = $('print-last-btn');
+ if (printLastBtn) {
+   printLastBtn.addEventListener('click', function() {
+     try {
+       var last = localStorage.getItem(STORAGE.lastReport);
+       if (last) openReport(last);
+     } catch(e) {}
+   });
+ }
+
+ // Clear data button
+ var clearBtn = $('clear-data-btn');
+ if (clearBtn) {
+   clearBtn.addEventListener('click', function() {
+     if (confirm('¿Eliminar todos los presupuestos y ajustes guardados en este navegador?')) {
+       clearAllData(false);
+     }
+   });
+ }
+
+ // Listeners
+ allInputs.forEach(function(input) {
+   input.addEventListener('input', function() {
+     if (input.closest('#settings-panel')) saveSettings();
+     calculate();
+   });
+   if (input.matches('input, select, textarea')) {
+     input.addEventListener('blur', validate);
+   }
+ });
+ materiaSelect.addEventListener('change', function() {
+   otherMateriaGroup.style.display = materiaSelect.value === 'other' ? 'block' : 'none';
+   validate();
+ });
+ historyTableBody.addEventListener('click', handleHistoryClick);
+ $('setting-regimen').addEventListener('change', function() {
+   gaEvent('regimen_changed', { regimen: $('setting-regimen').value });
+ });
+ $('setting-igv-enable').addEventListener('change', function() { saveSettings(); calculate(); });
+ $('save-btn').addEventListener('click', saveOrUpdate);
+
+ // Init
+ try {
+   var urlParams = new URLSearchParams(location.search);
+   if (urlParams.get('reset') === '1') clearAllData(true);
+ } catch(e) {}
+ loadSettings();
+ syncRegimenBlocks();
+ calculate();
+ loadBudgets();
+  // Lead form - populate hidden data before submit
+ const leadForm = $('#lead-form');
+ if (leadForm) {
+   leadForm.addEventListener('submit', function(e) {
+     const data = window._lastCalculation || {};
+     const summary = [
+       'PRESUPUESTO DE HONORARIOS',
+       'Cliente: ' + (data.client || 'N/A'),
+       'Materia: ' + (data.materia || 'N/A'),
+       'Régimen: ' + (data.regimen || 'N/A'),
+       'Horas: ' + (data.hours || 0) + ' hrs',
+       'Tarifa/hora: ' + (data.currency || 'S/') + ' ' + (data.rate || 0),
+       'Costo Base: ' + (data.currency || 'S/') + ' ' + ((data.baseCost || 0).toFixed(2)),
+       'Ajuste Factores: +' + (data.currency || 'S/') + ' ' + ((data.factorAdj || 0).toFixed(2)),
+       'Subtotal: ' + (data.currency || 'S/') + ' ' + ((data.subtotal || 0).toFixed(2)),
+       'Descuento: -' + (data.currency || 'S/') + ' ' + ((data.discountAmount || 0).toFixed(2)),
+       'Total Honorarios: ' + (data.currency || 'S/') + ' ' + ((data.totalHonorarios || 0).toFixed(2)),
+       'Total a Cobrar: ' + (data.currency || 'S/') + ' ' + ((data.total || 0).toFixed(2))
+     ].join('\n');
+     $('#lead-prest-data').value = summary;
+     // Track event
+     if (typeof gtag === 'function') {
+       gtag('event', 'lead_email_request');
+     }
+   });
+ }
+
+ // CSP fallback: add SRI hashes not needed for inline as we use 'unsafe-inline' for styles
+ console.log('🔒 Calculadora Gestores Públicos - Seguridad activa');
+});
+</script>
+</body>
+</html>
