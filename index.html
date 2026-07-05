@@ -97,13 +97,13 @@
  .floating-whatsapp:hover { transform:scale(1.1); }
  @media print { .modal, .main-container details, #history-section, .btn, header, .floating-whatsapp { display:none !important; } .printable { display:block !important; } }
  </style>
- <!-- Google Analytics 4 - CAMBIAR G-MEASUREMENT_ID -->
- <script async src="https://www.googletagmanager.com/gtag/js?id=G-MEASUREMENT_ID"></script>
+ <!-- Google Analytics 4 - CAMBIAR MIS_GA4_ID -->
+ <script async src="https://www.googletagmanager.com/gtag/js?id=MIS_GA4_ID"></script>
  <script>
  window.dataLayer = window.dataLayer || [];
  function gtag(){dataLayer.push(arguments);}
  gtag('js', new Date());
- gtag('config', 'G-MEASUREMENT_ID');
+ gtag('config', 'MIS_GA4_ID');
  </script>
  <meta http-equiv="X-Content-Type-Options" content="nosniff">
 </head>
@@ -249,7 +249,7 @@
  <!-- CTA post-cálculo -->
  <div id="lead-cta-after-calc" class="lead-cta">
  <p style="font-size:1.1em;margin-bottom:8px;">📋 ¿Quieres recibir este presupuesto en PDF?</p>
- <form id="lead-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:12px 0;">
+ <form id="lead-form" action="https://formspree.io/f/xgojdrop" method="POST" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:12px 0;">
  <input type="email" name="email" placeholder="tu@correo.com" required style="padding:10px 14px;border-radius:6px;border:none;flex:1;min-width:200px;font-size:15px;" />
  <input type="hidden" name="_subject" value="Nuevo lead - Calculadora Honorarios" />
  <input type="hidden" name="presupuesto" id="lead-prest-data" value="" />
