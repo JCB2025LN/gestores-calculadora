@@ -740,22 +740,58 @@
    });
  }
 
- // Listeners - CORREGIDO: gatillar cálculo en todos los inputs clave
+ // Listeners - V2: gatillar cálculo en TODOS los eventos de entrada
  const triggerCalculate = function() {
-   const input = this;
-   if (input.closest('#settings-panel')) saveSettings();
+   const el = this || window.event?.target;
+   // Si el cambio es en settings, guardar
+   if (el && el.closest && el.closest('#settings-panel')) saveSettings();
+   // Forzar recálculo completo
    calculate();
  };
- // Campos del formulario principal y ajustes
- document.querySelectorAll('#settings-panel input, #settings-panel select, ' +
-   '.inputs-panel input, .inputs-panel select, .inputs-panel textarea').forEach(function(input) {
+ // Todos los inputs, selects y textareas del documento
+ document.querySelectorAll('input, select, textarea').forEach(function(input) {
+   // input y change cubren escritura, pegado, autocompletado, selects
    input.addEventListener('input', triggerCalculate);
    input.addEventListener('change', triggerCalculate);
-   input.addEventListener('keyup', triggerCalculate);
+   // keyup como respaldo para inputs numéricos que a veces no disparan input
+   input.addEventListener('keyup', function() { calculate(); });
+   // blur por si el valor cambió sin evento
+   input.addEventListener('blur', function() { calculate(); });
  });
  // Validación al perder foco
  document.querySelectorAll('.inputs-panel input, .inputs-panel select, .inputs-panel textarea').forEach(function(input) {
    input.addEventListener('blur', validate);
+ });
+ // Recálculo forzado periódico durante escritura activa (respaldo para inputs number problemáticos)
+ let recalcInterval = null;
+ document.addEventListener('focusin', function(e) {
+   const target = e.target;
+   if (target && (target.tagName === 'INPUT' || target.tagName === 'SELECT' || target.tagName === 'TEXTAREA')) {
+     if (!recalcInterval) {
+       recalcInterval = setInterval(function() {
+         // Solo recalcular si hay un input enfocado
+         if (document.activeElement && 
+             (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'SELECT')) {
+           calculate();
+         } else {
+           clearInterval(recalcInterval);
+           recalcInterval = null;
+         }
+       }, 300);
+     }
+   }
+ });
+ document.addEventListener('focusout', function() {
+   if (recalcInterval) {
+     clearInterval(recalcInterval);
+     recalcInterval = null;
+   }
+ });
+ // Recálculo al hacer scroll o click (por si el usuario usó flechas en input number)
+ document.addEventListener('click', function(e) {
+   if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT')) {
+     setTimeout(calculate, 50);
+   }
  });
  materiaSelect.addEventListener('change', function() {
    otherMateriaGroup.style.display = materiaSelect.value === 'other' ? 'block' : 'none';
