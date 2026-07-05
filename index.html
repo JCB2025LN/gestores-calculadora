@@ -740,23 +740,32 @@
    });
  }
 
- // Listeners
- allInputs.forEach(function(input) {
-   input.addEventListener('input', function() {
-     if (input.closest('#settings-panel')) saveSettings();
-     calculate();
-   });
-   if (input.matches('input, select, textarea')) {
-     input.addEventListener('blur', validate);
-   }
+ // Listeners - CORREGIDO: gatillar cálculo en todos los inputs clave
+ const triggerCalculate = function() {
+   const input = this;
+   if (input.closest('#settings-panel')) saveSettings();
+   calculate();
+ };
+ // Campos del formulario principal y ajustes
+ document.querySelectorAll('#settings-panel input, #settings-panel select, ' +
+   '.inputs-panel input, .inputs-panel select, .inputs-panel textarea').forEach(function(input) {
+   input.addEventListener('input', triggerCalculate);
+   input.addEventListener('change', triggerCalculate);
+   input.addEventListener('keyup', triggerCalculate);
+ });
+ // Validación al perder foco
+ document.querySelectorAll('.inputs-panel input, .inputs-panel select, .inputs-panel textarea').forEach(function(input) {
+   input.addEventListener('blur', validate);
  });
  materiaSelect.addEventListener('change', function() {
    otherMateriaGroup.style.display = materiaSelect.value === 'other' ? 'block' : 'none';
+   calculate();
    validate();
  });
  historyTableBody.addEventListener('click', handleHistoryClick);
  $('setting-regimen').addEventListener('change', function() {
    gaEvent('regimen_changed', { regimen: $('setting-regimen').value });
+   calculate();
  });
  $('setting-igv-enable').addEventListener('change', function() { saveSettings(); calculate(); });
  $('save-btn').addEventListener('click', saveOrUpdate);
