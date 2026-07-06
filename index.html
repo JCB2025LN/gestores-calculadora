@@ -241,7 +241,8 @@
  </div>
  <div id="button-wrapper" class="inline" style="gap:10px; flex-wrap:wrap;">
  <button id="save-btn" class="btn btn-save" disabled>Guardar Presupuesto</button>
- <button id="print-last-btn" class="btn btn-print" disabled>Imprimir último reporte</button>
+ <button id="print-last-btn" class="btn btn-print" disabled>🖨️ Imprimir</button>
+ <button id="wa-send-last-btn" class="btn" style="background:#25D366;display:inline-flex;align-items:center;justify-content:center;gap:6px;" disabled>📲 WhatsApp</button>
  </div>
  <!-- CTA post-cálculo -->
  <div id="lead-cta-after-calc" class="lead-cta">
@@ -454,6 +455,7 @@
        <td>${formatCurrency(budget.total || 0, currency)}</td>
        <td class="action-buttons">
          <button class="btn-report" data-action="report" title="Ver reporte">📄</button>
+         <button class="btn-wa" data-action="whatsapp" title="Enviar por WhatsApp" style="background:#25D366;color:white;border:none;border-radius:4px;padding:4px 8px;cursor:pointer;">📲</button>
          <button class="btn-edit" data-action="edit" title="Editar">✏️</button>
          <button class="btn-delete" data-action="delete" title="Eliminar">🗑️</button>
        </td>`;
@@ -615,6 +617,19 @@
        saveBudgets();
        renderHistory();
      }
+   } } else if (action === 'whatsapp') {
+     const b = budgets.find(x => x.id === id);
+     if (b) {
+       const currency = b.currency;
+       const materiaText = b.materia === 'other' ? b.otherMateria : b.materia;
+       const baseCost = parseFloat(b.hours || 0) * parseFloat(b.rate || 0);
+       const report = `PRESUPUESTO - Gestores Públicos Perú
+Cliente: ${b.client}
+Materia: ${materiaText}
+Total: ${formatCurrency(b.total || 0, currency)}`;
+       const waUrl = 'https://wa.me/51986185255?text=' + encodeURIComponent(report.substring(0, 1500));
+       window.open(waUrl, '_blank');
+     }
    } else if (action === 'report') {
      var b = budgets.find(function(x) { return x.id === id; });
      if (b) {
@@ -706,6 +721,18 @@
        var last = localStorage.getItem(STORAGE.lastReport);
        if (last) openReport(last);
      } catch(e) {}
+   });
+ }
+
+ // WhatsApp send last report button
+ const waLastBtn = $('wa-send-last-btn');
+ if (waLastBtn) {
+   waLastBtn.addEventListener('click', function() {
+     const last = localStorage.getItem(STORAGE.lastReport);
+     if (last) {
+       const waUrl = 'https://wa.me/51986185255?text=' + encodeURIComponent(last.substring(0, 1500));
+       window.open(waUrl, '_blank');
+     }
    });
  }
 
