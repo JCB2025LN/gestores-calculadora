@@ -90,8 +90,6 @@
  .inline { display:flex; gap:10px; align-items:center; }
  .muted { color:#667; font-size:12px; }
  .modal-actions { display:flex; gap:10px; margin-top:12px; }
- .lead-cta { display:none; background:#0a2b4c; color:white; text-align:center; padding:20px; border-radius:10px; margin-top:20px; }
- .lead-cta a { color:#d4af37; font-weight:700; }
  .floating-whatsapp { position:fixed; bottom:24px; right:24px; background:#25D366; color:white; width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.25); z-index:999; cursor:pointer; text-decoration:none; font-size:28px; transition:transform .2s; }
  .floating-whatsapp:hover { transform:scale(1.1); }
  @media print { .modal, .main-container details, #history-section, .btn, header, .floating-whatsapp { display:none !important; } .printable { display:block !important; } }
@@ -119,21 +117,9 @@
 
  <div class="main-container" id="calculator">
  <header>
- <img alt="Gestores Públicos Perú" src="https://scontent.flim20-1.fna.fbcdn.net/v/t39.30808-6/406836396_704560075140112_1378587329966263231_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHAAG3G8pS4rsDgOLNen202RwF65qIMZ-dHAXrmogxn547LslSl0a4R2JFHKDU9QE3ukdwQ95OV_AmVOhFF-6D6&_nc_ohc=vJCkvQ-t0skQ7kNvwF6aeJV&_nc_oc=AdnTM4VHuPqaPt6e2_IYATkvNEhs9LalAAkrpC5SNvdVpd1MFbhZxItqUwzXq8IOM88&_nc_zt=23&_nc_ht=scontent.flim20-1.fna&_nc_gid=zEflvjOEz6bzU8aP38BPLw&oh=00_AfV105y3GuouvW5FjrwL0bVw5F_kvLcbsG6SuF2FnBaj-Q&oe=68A7D654" />
+ <img alt="Gestores Públicos Perú" src="https://www.gestorespublicos.pe/wp-content/uploads/2023/12/Logo.jpg" />
  <div>
  <div class="brand">GESTORES PÚBLICOS PERÚ
-<!-- LEAD CAPTURE: aparece cuando hay cálculo -->
-<div id="lead-cta-after-calc" style="display:none;margin-top:0;margin-bottom:12px;padding:12px;background:#f0f8ff;border:1px solid #cce5ff;border-radius:8px;">
- <p style="margin:0 0 8px;font-weight:600;font-size:13px;color:#0a2b4c;">📋 ¿Quieres recibir este presupuesto en PDF?</p>
- <form id="lead-form" action="https://formspree.io/f/xgojdrop" method="POST" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:12px 0;">
- <input type="email" name="email" placeholder="Tu correo electrónico" required style="flex:1;min-width:200px;padding:10px;border:1px solid #e0e0e0;border-radius:6px;" />
- <input type="hidden" name="_subject" value="Nuevo lead - Calculadora Honorarios" />
- <input type="hidden" name="budget_data" id="budget-data-input" value="" />
- <button type="submit" style="background:#0a2b4c;color:white;border:none;border-radius:6px;padding:10px 16px;font-weight:700;cursor:pointer;">📥 Enviar PDF</button>
- <div class="lead-message" id="lead-message" style="width:100%;text-align:center;font-size:13px;color:#28a745;"></div>
- </form>
- <p style="margin:8px 0 0;font-size:12px;color:#666;">💬 También puedes consultarnos directo: <a href="https://wa.me/51986185255?text=Quiero%20cotizar%20mis%20honorarios" target="_blank">WhatsApp</a></p>
-</div>
 </div>
  <h1>Calculadora de Honorarios</h1>
  </div>
@@ -253,6 +239,7 @@
  <div class="result-line"><span>+ Gastos Suplidos</span><span id="res-expenses"></span></div>
  <div class="result-line total-line"><span>TOTAL A COBRAR</span><span id="res-total"></span></div>
  </div>
+ <div style="text-align:center;margin:10px 0;"><a href="https://wa.me/51986185255?text=Quiero%20cotizar%20mis%20honorarios" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;">💬 Cotiza con nosotros</a></div>
  <div id="button-wrapper" class="inline" style="gap:10px; flex-wrap:wrap;">
  <button id="save-btn" class="btn btn-save" disabled>Guardar Presupuesto</button>
  <button id="print-last-btn" class="btn btn-print" disabled>Imprimir último reporte</button>
@@ -449,25 +436,8 @@
    $('res-expenses').textContent = '+ ' + formatCurrency(expenses, currency);
    $('res-total').textContent = formatCurrency(total, currency);
    $('line-igv').style.display = (regimen === 'factura' && $('setting-igv-enable').checked) ? '' : 'none';
-   // Mostrar CTA post-calculo
-   const leadCta = $('lead-cta-after-calc');
-   if (leadCta && hours > 0) {
-     leadCta.style.display = 'block';
-   }
-   // Guardar datos para lead form
- window._lastCalculation = {
- currency, hours, rate, discountPerc, expenses, totalFactor,
- baseCost, factorAdj, subtotal, discountAmount, regimen, igvAmount,
- receiptAmount, totalHonorarios, total, client: $('client').value,
- materia: materiaSelect.value === 'other' ? $('other-materia').value : materiaSelect.value
- };
- // Mostrar CTA lead si hay horas > 0
- const leadCtaEl = $('lead-cta-after-calc');
- if (leadCtaEl && hours > 0) {
- leadCtaEl.style.display = 'block';
- const bdi = $('budget-data-input');
- if (bdi) bdi.value = JSON.stringify(window._lastCalculation);
- }
+
+  
  validate();
  };
 
@@ -748,18 +718,6 @@
        clearAllData(false);
      }
    });
- }
-
- // Lead form handler
- const leadForm = $('lead-form');
- if (leadForm) {
- leadForm.addEventListener('submit', function(e) {
- const email = leadForm.querySelector('input[type="email"]').value.trim();
- if (!email) { e.preventDefault(); return; }
- const msgEl = $('lead-message');
- if (msgEl) msgEl.textContent = '✅ Enviando... Revisa tu correo en unos segundos.';
- try { if (typeof gtag === 'function') gtag('event', 'lead_captured', { email_domain: email.split('@')[1] || '' }); } catch(e) {}
- });
  }
 
  // Listeners
