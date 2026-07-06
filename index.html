@@ -5,14 +5,16 @@
  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
  <title>Calculadora de Honorarios para Abogados Perú – Gestores Públicos</title>
  <meta name="description" content="Calcula cuánto cobrar por tus servicios legales en Perú. RPH sin IGV, Factura/Boleta con IGV. Ajustes por complejidad, urgencia y laboriosidad. Herramienta gratuita para abogados y gestores públicos.">
- <link rel="canonical" href="https://calculadora.gestorespublicos.pe/">
+ <link rel="canonical" href="https://www.gestores.pe/">
+ <meta name="google-site-verification" content="lIrLKHiwcBDuRluGBSP9y8ovli4GYrl14KEQfLB88nY" />
+ <link rel="icon" href="https://www.gestorespublicos.pe/wp-content/uploads/2025/10/6.png" sizes="any" type="image/png">
  <meta name="keywords" content="calculadora honorarios abogados perú, cuánto cobrar como abogado, tarifa por hora abogado perú, recibo por honorarios 4ta categoría, factura honorarios profesionales">
  <meta name="author" content="Gestores Públicos Perú">
  <!-- Open Graph -->
  <meta property="og:type" content="website">
  <meta property="og:title" content="Calculadora de Honorarios - ABOGADOS PERÚ | Gestores Públicos">
  <meta property="og:description" content="Fija tus honorarios con criterio tributario. Calcula RPH, Factura o Boleta al instante.">
- <meta property="og:url" content="https://calculadora.gestorespublicos.pe/">
+ <meta property="og:url" content="https://www.gestores.pe/">
  <meta property="og:image" content="https://gestorespublicos.pe/img/og-calculadora.jpg">
  <meta property="og:locale" content="es_PE">
  <meta name="twitter:card" content="summary_large_image">
@@ -461,6 +463,16 @@
        </td>`;
    });
    if ($('print-last-btn')) $('print-last-btn').disabled = budgets.length === 0;
+   if ($('wa-send-last-btn')) $('wa-send-last-btn').disabled = budgets.length === 0;
+   if ($('wa-send-last-btn')) {
+     $('wa-send-last-btn').addEventListener('click', function() {
+       const lastItem = localStorage.getItem(STORAGE.lastReport);
+       if (lastItem) {
+         const waUrl = 'https://wa.me/51986185255?text=' + encodeURIComponent(lastItem.substring(0, 1500));
+         window.open(waUrl, '_blank');
+       }
+     });
+   }
  };
 
  function escHtml(text) {
@@ -629,6 +641,14 @@ Materia: ${materiaText}
 Total: ${formatCurrency(b.total || 0, currency)}`;
        const waUrl = 'https://wa.me/51986185255?text=' + encodeURIComponent(report.substring(0, 1500));
        window.open(waUrl, '_blank');
+     }
+   } } else if (action === 'whatsapp') {
+     const b = budgets.find(x => x.id === id);
+     if (b) {
+       const cur = b.currency;
+       const mat = b.materia === 'other' ? b.otherMateria : b.materia;
+       const msg = `PRESUPUESTO - Gestores Públicos Perú\nCliente: ${b.client}\nMateria: ${mat}\nTotal: ${formatCurrency(b.total || 0, cur)}`;
+       window.open('https://wa.me/51986185255?text=' + encodeURIComponent(msg.substring(0, 1500)), '_blank');
      }
    } else if (action === 'report') {
      var b = budgets.find(function(x) { return x.id === id; });
