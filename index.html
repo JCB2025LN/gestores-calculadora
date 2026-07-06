@@ -462,9 +462,9 @@
  materia: materiaSelect.value === 'other' ? $('other-materia').value : materiaSelect.value
  };
  // Mostrar CTA lead si hay horas > 0
- const leadCta = $('lead-cta-after-calc');
- if (leadCta && hours > 0) {
- leadCta.style.display = 'block';
+ const leadCtaEl = $('lead-cta-after-calc');
+ if (leadCtaEl && hours > 0) {
+ leadCtaEl.style.display = 'block';
  const bdi = $('budget-data-input');
  if (bdi) bdi.value = JSON.stringify(window._lastCalculation);
  }
