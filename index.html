@@ -2,18 +2,17 @@
 <html lang="es">
 <head>
  <meta charset="UTF-8" />
- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self' https://www.google-analytics.com https://formspree.io; font-src 'self'; frame-src 'none'; object-src 'none'; form-action 'self' https://formspree.io;">
  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
  <title>Calculadora de Honorarios para Abogados Perú – Gestores Públicos</title>
  <meta name="description" content="Calcula cuánto cobrar por tus servicios legales en Perú. RPH sin IGV, Factura/Boleta con IGV. Ajustes por complejidad, urgencia y laboriosidad. Herramienta gratuita para abogados y gestores públicos.">
- <link rel="canonical" href="https://gestores.pe/">
+ <link rel="canonical" href="https://calculadora.gestorespublicos.pe/">
  <meta name="keywords" content="calculadora honorarios abogados perú, cuánto cobrar como abogado, tarifa por hora abogado perú, recibo por honorarios 4ta categoría, factura honorarios profesionales">
  <meta name="author" content="Gestores Públicos Perú">
  <!-- Open Graph -->
  <meta property="og:type" content="website">
  <meta property="og:title" content="Calculadora de Honorarios - ABOGADOS PERÚ | Gestores Públicos">
  <meta property="og:description" content="Fija tus honorarios con criterio tributario. Calcula RPH, Factura o Boleta al instante.">
- <meta property="og:url" content="https://gestores.pe/">
+ <meta property="og:url" content="https://calculadora.gestorespublicos.pe/">
  <meta property="og:image" content="https://gestorespublicos.pe/img/og-calculadora.jpg">
  <meta property="og:locale" content="es_PE">
  <meta name="twitter:card" content="summary_large_image">
@@ -25,7 +24,7 @@
  "name":"Calculadora de Honorarios para Abogados",
  "applicationCategory":"BusinessApplication",
  "operatingSystem":"Web",
- "url":"https://gestores.pe/",
+ "url":"https://calculadora.gestorespublicos.pe/",
  "description":"Calcula honorarios profesionales con IGV, RPH o Boleta. Ajusta por complejidad, urgencia y laboriosidad. Gratis para abogados peruanos.",
  "offers":{"@type":"Offer","price":"0","priceCurrency":"PEN"},
  "author":{"@type":"Organization","name":"Gestores Públicos Perú","url":"https://gestorespublicos.pe/"}
@@ -97,15 +96,14 @@
  .floating-whatsapp:hover { transform:scale(1.1); }
  @media print { .modal, .main-container details, #history-section, .btn, header, .floating-whatsapp { display:none !important; } .printable { display:block !important; } }
  </style>
- <!-- Google Analytics 4 - CAMBIAR MIS_GA4_ID -->
- <script async src="https://www.googletagmanager.com/gtag/js?id=MIS_GA4_ID"></script>
+ <!-- Google Analytics 4 - CAMBIAR G-XXXXXXXX -->
+ <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX"></script>
  <script>
  window.dataLayer = window.dataLayer || [];
  function gtag(){dataLayer.push(arguments);}
  gtag('js', new Date());
- gtag('config', 'MIS_GA4_ID');
+ gtag('config', 'G-XXXXXXXX');
  </script>
- <meta http-equiv="X-Content-Type-Options" content="nosniff">
 </head>
 <body>
 
@@ -123,7 +121,20 @@
  <header>
  <img alt="Gestores Públicos Perú" src="https://scontent.flim20-1.fna.fbcdn.net/v/t39.30808-6/406836396_704560075140112_1378587329966263231_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHAAG3G8pS4rsDgOLNen202RwF65qIMZ-dHAXrmogxn547LslSl0a4R2JFHKDU9QE3ukdwQ95OV_AmVOhFF-6D6&_nc_ohc=vJCkvQ-t0skQ7kNvwF6aeJV&_nc_oc=AdnTM4VHuPqaPt6e2_IYATkvNEhs9LalAAkrpC5SNvdVpd1MFbhZxItqUwzXq8IOM88&_nc_zt=23&_nc_ht=scontent.flim20-1.fna&_nc_gid=zEflvjOEz6bzU8aP38BPLw&oh=00_AfV105y3GuouvW5FjrwL0bVw5F_kvLcbsG6SuF2FnBaj-Q&oe=68A7D654" />
  <div>
- <div class="brand">GESTORES PÚBLICOS PERÚ</div>
+ <div class="brand">GESTORES PÚBLICOS PERÚ
+<!-- LEAD CAPTURE: aparece cuando hay cálculo -->
+<div id="lead-cta-after-calc" style="display:none;margin-top:0;margin-bottom:12px;padding:12px;background:#f0f8ff;border:1px solid #cce5ff;border-radius:8px;">
+ <p style="margin:0 0 8px;font-weight:600;font-size:13px;color:#0a2b4c;">📋 ¿Quieres recibir este presupuesto en PDF?</p>
+ <form id="lead-form" action="https://formspree.io/f/xgojdrop" method="POST" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:12px 0;">
+ <input type="email" name="email" placeholder="Tu correo electrónico" required style="flex:1;min-width:200px;padding:10px;border:1px solid #e0e0e0;border-radius:6px;" />
+ <input type="hidden" name="_subject" value="Nuevo lead - Calculadora Honorarios" />
+ <input type="hidden" name="budget_data" id="budget-data-input" value="" />
+ <button type="submit" style="background:#0a2b4c;color:white;border:none;border-radius:6px;padding:10px 16px;font-weight:700;cursor:pointer;">📥 Enviar PDF</button>
+ <div class="lead-message" id="lead-message" style="width:100%;text-align:center;font-size:13px;color:#28a745;"></div>
+ </form>
+ <p style="margin:8px 0 0;font-size:12px;color:#666;">💬 También puedes consultarnos directo: <a href="https://wa.me/51986185255?text=Quiero%20cotizar%20mis%20honorarios" target="_blank">WhatsApp</a></p>
+</div>
+</div>
  <h1>Calculadora de Honorarios</h1>
  </div>
  </header>
@@ -248,17 +259,9 @@
  </div>
  <!-- CTA post-cálculo -->
  <div id="lead-cta-after-calc" class="lead-cta">
- <p style="font-size:1.1em;margin-bottom:8px;">📋 ¿Quieres recibir este presupuesto en PDF?</p>
- <form id="lead-form" action="https://formspree.io/f/xgojdrop" method="POST" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:12px 0;">
- <input type="email" name="email" placeholder="tu@correo.com" required style="padding:10px 14px;border-radius:6px;border:none;flex:1;min-width:200px;font-size:15px;" />
- <input type="hidden" name="_subject" value="Nuevo lead - Calculadora Honorarios" />
- <input type="hidden" name="presupuesto" id="lead-prest-data" value="" />
- <button type="submit" style="padding:10px 20px;border-radius:6px;border:none;background:#d4af37;color:#0a2b4c;font-weight:700;cursor:pointer;font-size:15px;">📥 Enviar PDF</button>
- </form>
- <p style="font-size:0.85em;opacity:0.8;">Recibirás un PDF con tu presupuesto. Sin spam, sin compromiso.</p>
- <hr style="border-color:rgba(255,255,255,0.2);margin:12px 0;">
- <p style="font-size:1em;">¿Necesitas ayuda para fijar tus honorarios?</p>
- <a href="https://wa.me/51986185255?text=Quiero%20una%20asesor%C3%ADa%20sobre%20honorarios%20profesionales" target="_blank" rel="noopener" style="display:inline-block;background:#25D366;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:700;margin-top:4px;">💬 Cotiza con nosotros</a>
+ <p style="font-size:1.1em;margin-bottom:8px;">🔍 ¿Necesitas ayuda para fijar tus honorarios?</p>
+ <p>Te asesoramos sin compromiso</p>
+ <a href="https://wa.me/51986185255?text=Quiero%20una%20asesor%C3%ADa%20sobre%20honorarios%20profesionales" target="_blank" rel="noopener" style="display:inline-block;background:#25D366;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700;">💬 Cotiza con nosotros</a>
  </div>
  </div>
  </div>
@@ -446,19 +449,26 @@
    $('res-expenses').textContent = '+ ' + formatCurrency(expenses, currency);
    $('res-total').textContent = formatCurrency(total, currency);
    $('line-igv').style.display = (regimen === 'factura' && $('setting-igv-enable').checked) ? '' : 'none';
-   // Guardar datos para el lead form
-   window._lastCalculation = {
-     currency, hours, rate, discountPerc, expenses, totalFactor,
-     baseCost, factorAdj, subtotal, discountAmount, regimen, igvAmount,
-     receiptAmount, totalHonorarios, total, client: $('client').value,
-     materia: materiaSelect.value === 'other' ? $('other-materia').value : materiaSelect.value
-   };
    // Mostrar CTA post-calculo
    const leadCta = $('lead-cta-after-calc');
    if (leadCta && hours > 0) {
      leadCta.style.display = 'block';
    }
-   validate();
+   // Guardar datos para lead form
+ window._lastCalculation = {
+ currency, hours, rate, discountPerc, expenses, totalFactor,
+ baseCost, factorAdj, subtotal, discountAmount, regimen, igvAmount,
+ receiptAmount, totalHonorarios, total, client: $('client').value,
+ materia: materiaSelect.value === 'other' ? $('other-materia').value : materiaSelect.value
+ };
+ // Mostrar CTA lead si hay horas > 0
+ const leadCta = $('lead-cta-after-calc');
+ if (leadCta && hours > 0) {
+ leadCta.style.display = 'block';
+ const bdi = $('budget-data-input');
+ if (bdi) bdi.value = JSON.stringify(window._lastCalculation);
+ }
+ validate();
  };
 
  const renderHistory = () => {
@@ -740,68 +750,35 @@
    });
  }
 
- // Listeners - V2: gatillar cálculo en TODOS los eventos de entrada
- const triggerCalculate = function() {
-   const el = this || window.event?.target;
-   // Si el cambio es en settings, guardar
-   if (el && el.closest && el.closest('#settings-panel')) saveSettings();
-   // Forzar recálculo completo
-   calculate();
- };
- // Todos los inputs, selects y textareas del documento
- document.querySelectorAll('input, select, textarea').forEach(function(input) {
-   // input y change cubren escritura, pegado, autocompletado, selects
-   input.addEventListener('input', triggerCalculate);
-   input.addEventListener('change', triggerCalculate);
-   // keyup como respaldo para inputs numéricos que a veces no disparan input
-   input.addEventListener('keyup', function() { calculate(); });
-   // blur por si el valor cambió sin evento
-   input.addEventListener('blur', function() { calculate(); });
+ // Lead form handler
+ const leadForm = $('lead-form');
+ if (leadForm) {
+ leadForm.addEventListener('submit', function(e) {
+ const email = leadForm.querySelector('input[type="email"]').value.trim();
+ if (!email) { e.preventDefault(); return; }
+ const msgEl = $('lead-message');
+ if (msgEl) msgEl.textContent = '✅ Enviando... Revisa tu correo en unos segundos.';
+ try { if (typeof gtag === 'function') gtag('event', 'lead_captured', { email_domain: email.split('@')[1] || '' }); } catch(e) {}
  });
- // Validación al perder foco
- document.querySelectorAll('.inputs-panel input, .inputs-panel select, .inputs-panel textarea').forEach(function(input) {
-   input.addEventListener('blur', validate);
- });
- // Recálculo forzado periódico durante escritura activa (respaldo para inputs number problemáticos)
- let recalcInterval = null;
- document.addEventListener('focusin', function(e) {
-   const target = e.target;
-   if (target && (target.tagName === 'INPUT' || target.tagName === 'SELECT' || target.tagName === 'TEXTAREA')) {
-     if (!recalcInterval) {
-       recalcInterval = setInterval(function() {
-         // Solo recalcular si hay un input enfocado
-         if (document.activeElement && 
-             (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'SELECT')) {
-           calculate();
-         } else {
-           clearInterval(recalcInterval);
-           recalcInterval = null;
-         }
-       }, 300);
-     }
-   }
- });
- document.addEventListener('focusout', function() {
-   if (recalcInterval) {
-     clearInterval(recalcInterval);
-     recalcInterval = null;
-   }
- });
- // Recálculo al hacer scroll o click (por si el usuario usó flechas en input number)
- document.addEventListener('click', function(e) {
-   if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT')) {
-     setTimeout(calculate, 50);
+ }
+
+ // Listeners
+ allInputs.forEach(function(input) {
+   input.addEventListener('input', function() {
+     if (input.closest('#settings-panel')) saveSettings();
+     calculate();
+   });
+   if (input.matches('input, select, textarea')) {
+     input.addEventListener('blur', validate);
    }
  });
  materiaSelect.addEventListener('change', function() {
    otherMateriaGroup.style.display = materiaSelect.value === 'other' ? 'block' : 'none';
-   calculate();
    validate();
  });
  historyTableBody.addEventListener('click', handleHistoryClick);
  $('setting-regimen').addEventListener('change', function() {
    gaEvent('regimen_changed', { regimen: $('setting-regimen').value });
-   calculate();
  });
  $('setting-igv-enable').addEventListener('change', function() { saveSettings(); calculate(); });
  $('save-btn').addEventListener('click', saveOrUpdate);
@@ -815,36 +792,7 @@
  syncRegimenBlocks();
  calculate();
  loadBudgets();
-  // Lead form - populate hidden data before submit
- const leadForm = $('#lead-form');
- if (leadForm) {
-   leadForm.addEventListener('submit', function(e) {
-     const data = window._lastCalculation || {};
-     const summary = [
-       'PRESUPUESTO DE HONORARIOS',
-       'Cliente: ' + (data.client || 'N/A'),
-       'Materia: ' + (data.materia || 'N/A'),
-       'Régimen: ' + (data.regimen || 'N/A'),
-       'Horas: ' + (data.hours || 0) + ' hrs',
-       'Tarifa/hora: ' + (data.currency || 'S/') + ' ' + (data.rate || 0),
-       'Costo Base: ' + (data.currency || 'S/') + ' ' + ((data.baseCost || 0).toFixed(2)),
-       'Ajuste Factores: +' + (data.currency || 'S/') + ' ' + ((data.factorAdj || 0).toFixed(2)),
-       'Subtotal: ' + (data.currency || 'S/') + ' ' + ((data.subtotal || 0).toFixed(2)),
-       'Descuento: -' + (data.currency || 'S/') + ' ' + ((data.discountAmount || 0).toFixed(2)),
-       'Total Honorarios: ' + (data.currency || 'S/') + ' ' + ((data.totalHonorarios || 0).toFixed(2)),
-       'Total a Cobrar: ' + (data.currency || 'S/') + ' ' + ((data.total || 0).toFixed(2))
-     ].join('\n');
-     $('#lead-prest-data').value = summary;
-     // Track event
-     if (typeof gtag === 'function') {
-       gtag('event', 'lead_email_request');
-     }
-   });
- }
-
- // CSP fallback: add SRI hashes not needed for inline as we use 'unsafe-inline' for styles
- console.log('🔒 Calculadora Gestores Públicos - Seguridad activa');
-});
+ });
 </script>
 </body>
 </html>
