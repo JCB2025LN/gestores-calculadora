@@ -7,7 +7,7 @@
  <meta name="description" content="Calcula cuánto cobrar por tus servicios legales en Perú. RPH sin IGV, Factura/Boleta con IGV. Ajustes por complejidad, urgencia y laboriosidad. Herramienta gratuita para abogados y gestores públicos.">
  <link rel="canonical" href="https://www.gestores.pe/">
  <meta name="google-site-verification" content="lIrLKHiwcBDuRluGBSP9y8ovli4GYrl14KEQfLB88nY" />
- <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iNDQiIGhlaWdodD0iNDQiPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiByeD0iOCIgZmlsbD0iIzBhMmI0YyIvPjx0ZXh0IHg9IjUwIiB5PSI2OCIgZm9udC1zaXplPSI1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2Q0YWYzNyIgZm9udC13ZWlnaHQ9ImJvbGQiPkdQPC90ZXh0Pjwvc3ZnPg==" sizes="any" type="image/svg+xml">
+ <link rel="icon" href="https://www.gestorespublicos.pe/wp-content/uploads/2025/10/6.png" sizes="any" type="image/png">
  <meta name="keywords" content="calculadora honorarios abogados perú, cuánto cobrar como abogado, tarifa por hora abogado perú, recibo por honorarios 4ta categoría, factura honorarios profesionales">
  <meta name="author" content="Gestores Públicos Perú">
  <!-- Open Graph -->
@@ -26,7 +26,7 @@
  "name":"Calculadora de Honorarios para Abogados",
  "applicationCategory":"BusinessApplication",
  "operatingSystem":"Web",
- "url":"https://calculadora.gestorespublicos.pe/",
+ "url":"https://www.gestores.pe/",
  "description":"Calcula honorarios profesionales con IGV, RPH o Boleta. Ajusta por complejidad, urgencia y laboriosidad. Gratis para abogados peruanos.",
  "offers":{"@type":"Offer","price":"0","priceCurrency":"PEN"},
  "author":{"@type":"Organization","name":"Gestores Públicos Perú","url":"https://gestorespublicos.pe/"}
@@ -96,7 +96,7 @@
  .floating-whatsapp:hover { transform:scale(1.1); }
  @media print { .modal, .main-container details, #history-section, .btn, header, .floating-whatsapp { display:none !important; } .printable { display:block !important; } }
  </style>
- <!-- Google Analytics 4 - CAMBIAR G-8NYCN8TK0FX -->
+ <!-- Google Analytics 4 -->
  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8NYCN8TK0FX"></script>
  <script>
  window.dataLayer = window.dataLayer || [];
@@ -119,10 +119,9 @@
 
  <div class="main-container" id="calculator">
  <header>
- <img alt="Gestores Públicos Perú" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iNDQiIGhlaWdodD0iNDQiPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiByeD0iOCIgZmlsbD0iIzBhMmI0YyIvPjx0ZXh0IHg9IjUwIiB5PSI2OCIgZm9udC1zaXplPSI1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2Q0YWYzNyIgZm9udC13ZWlnaHQ9ImJvbGQiPkdQPC90ZXh0Pjwvc3ZnPg==" style="width:44px;height:44px;object-fit:contain;border-radius:8px;" />
+ <img alt="Gestores Públicos Perú" src="https://scontent.flim20-1.fna.fbcdn.net/v/t39.30808-6/406836396_704560075140112_1378587329966263231_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHAAG3G8pS4rsDgOLNen202RwF65qIMZ-dHAXrmogxn547LslSl0a4R2JFHKDU9QE3ukdwQ95OV_AmVOhFF-6D6&_nc_ohc=vJCkvQ-t0skQ7kNvwF6aeJV&_nc_oc=AdnTM4VHuPqaPt6e2_IYATkvNEhs9LalAAkrpC5SNvdVpd1MFbhZxItqUwzXq8IOM88&_nc_zt=23&_nc_ht=scontent.flim20-1.fna&_nc_gid=zEflvjOEz6bzU8aP38BPLw&oh=00_AfV105y3GuouvW5FjrwL0bVw5F_kvLcbsG6SuF2FnBaj-Q&oe=68A7D654" onerror="this.style.display='none'" />
  <div>
- <div class="brand">GESTORES PÚBLICOS PERÚ
-</div>
+ <div class="brand">GESTORES PÚBLICOS PERÚ</div>
  <h1>Calculadora de Honorarios</h1>
  </div>
  </header>
@@ -187,7 +186,8 @@
  <div class="input-group">
  <label for="client">Nombre del Cliente</label>
  <input type="text" id="client" placeholder="Ej: Empresa X" />
-  </div>
+ <div id="err-client" class="error"></div>
+ </div>
 
  <div class="input-group">
  <label for="materia">Materia</label>
@@ -205,7 +205,8 @@
  <div class="input-group" id="other-materia-group" style="display:none;">
  <label for="other-materia">Especificar Materia</label>
  <input type="text" id="other-materia" placeholder="Describe la materia" />
-  </div>
+ <div id="err-other-materia" class="error"></div>
+ </div>
 
  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
  <div class="input-group"><label for="hours">Total Horas Estimadas</label><input type="number" id="hours" step="0.1" placeholder="Ej. 10" /><div id="err-hours" class="error"></div></div>
@@ -241,9 +242,9 @@
  </div>
  <div id="button-wrapper" class="inline" style="gap:10px; flex-wrap:wrap;">
  <button id="save-btn" class="btn btn-save" disabled>Guardar Presupuesto</button>
- <button id="print-last-btn" class="btn btn-print" disabled>🖨️ Imprimir</button>
- <button id="wa-send-last-btn" class="btn" style="background:#25D366;display:inline-flex;align-items:center;justify-content:center;gap:6px;" disabled>📲 WhatsApp</button>
+ <button id="print-last-btn" class="btn btn-print" disabled>Imprimir último reporte</button>
  </div>
+ <!-- CTA post-cálculo -->
  </div>
  </div>
 
@@ -430,9 +431,8 @@
    $('res-expenses').textContent = '+ ' + formatCurrency(expenses, currency);
    $('res-total').textContent = formatCurrency(total, currency);
    $('line-igv').style.display = (regimen === 'factura' && $('setting-igv-enable').checked) ? '' : 'none';
-
-  
- validate();
+   // Mostrar CTA post-calculo
+   validate();
  };
 
  const renderHistory = () => {
@@ -449,22 +449,11 @@
        <td>${formatCurrency(budget.total || 0, currency)}</td>
        <td class="action-buttons">
          <button class="btn-report" data-action="report" title="Ver reporte">📄</button>
-         <button class="btn-wa" data-action="whatsapp" title="Enviar por WhatsApp" style="background:#25D366;color:white;border:none;border-radius:4px;padding:4px 8px;cursor:pointer;">📲</button>
          <button class="btn-edit" data-action="edit" title="Editar">✏️</button>
          <button class="btn-delete" data-action="delete" title="Eliminar">🗑️</button>
        </td>`;
    });
    if ($('print-last-btn')) $('print-last-btn').disabled = budgets.length === 0;
-   if ($('wa-send-last-btn')) $('wa-send-last-btn').disabled = budgets.length === 0;
-   if ($('wa-send-last-btn')) {
-     $('wa-send-last-btn').addEventListener('click', function() {
-       const lastItem = localStorage.getItem(STORAGE.lastReport);
-       if (lastItem) {
-         const waUrl = 'https://wa.me/51986185255?text=' + encodeURIComponent(lastItem.substring(0, 1500));
-         window.open(waUrl, '_blank');
-       }
-     });
-   }
  };
 
  function escHtml(text) {
@@ -621,27 +610,6 @@
        saveBudgets();
        renderHistory();
      }
-   } } else if (action === 'whatsapp') {
-     const b = budgets.find(x => x.id === id);
-     if (b) {
-       const currency = b.currency;
-       const materiaText = b.materia === 'other' ? b.otherMateria : b.materia;
-       const baseCost = parseFloat(b.hours || 0) * parseFloat(b.rate || 0);
-       const report = `PRESUPUESTO - Gestores Públicos Perú
-Cliente: ${b.client}
-Materia: ${materiaText}
-Total: ${formatCurrency(b.total || 0, currency)}`;
-       const waUrl = 'https://wa.me/51986185255?text=' + encodeURIComponent(report.substring(0, 1500));
-       window.open(waUrl, '_blank');
-     }
-   } } else if (action === 'whatsapp') {
-     const b = budgets.find(x => x.id === id);
-     if (b) {
-       const cur = b.currency;
-       const mat = b.materia === 'other' ? b.otherMateria : b.materia;
-       const msg = `PRESUPUESTO - Gestores Públicos Perú\nCliente: ${b.client}\nMateria: ${mat}\nTotal: ${formatCurrency(b.total || 0, cur)}`;
-       window.open('https://wa.me/51986185255?text=' + encodeURIComponent(msg.substring(0, 1500)), '_blank');
-     }
    } else if (action === 'report') {
      var b = budgets.find(function(x) { return x.id === id; });
      if (b) {
@@ -732,27 +700,7 @@ Total: ${formatCurrency(b.total || 0, currency)}`;
      try {
        var last = localStorage.getItem(STORAGE.lastReport);
        if (last) openReport(last);
- });
- if ($('wa-send-last-btn')) {
-   $('wa-send-last-btn').addEventListener('click', function() {
-     const last = localStorage.getItem(STORAGE.lastReport);
-     if (last) {
-       window.open('https://wa.me/51986185255?text=' + encodeURIComponent(last.substring(0,1500)), '_blank');
-     }
-   });
      } catch(e) {}
-   });
- }
-
- // WhatsApp send last report button
- const waLastBtn = $('wa-send-last-btn');
- if (waLastBtn) {
-   waLastBtn.addEventListener('click', function() {
-     const last = localStorage.getItem(STORAGE.lastReport);
-     if (last) {
-       const waUrl = 'https://wa.me/51986185255?text=' + encodeURIComponent(last.substring(0, 1500));
-       window.open(waUrl, '_blank');
-     }
    });
  }
 
