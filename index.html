@@ -732,6 +732,14 @@ Total: ${formatCurrency(b.total || 0, currency)}`;
      try {
        var last = localStorage.getItem(STORAGE.lastReport);
        if (last) openReport(last);
+ });
+ if ($('wa-send-last-btn')) {
+   $('wa-send-last-btn').addEventListener('click', function() {
+     const last = localStorage.getItem(STORAGE.lastReport);
+     if (last) {
+       window.open('https://wa.me/51986185255?text=' + encodeURIComponent(last.substring(0,1500)), '_blank');
+     }
+   });
      } catch(e) {}
    });
  }
